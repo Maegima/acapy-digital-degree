@@ -1,0 +1,18 @@
+{
+    "dif": {
+        "record_ids": {
+            "university_degree_1": [
+                "Cred1"
+            ]
+        } 
+    }
+}
+
+request["dif"]["record_ids"] = {}
+for input_descriptor in pres_request_dif["presentation_definition"][
+    "input_descriptors"
+]:
+    request["dif"]["record_ids"][input_descriptor["id"]] = [
+        record_id,
+    ]
+log_msg("presenting ld-presentation:", request)

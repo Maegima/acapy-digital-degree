@@ -1,0 +1,43 @@
+{
+    "connection_id": null,
+    "comment": "test proof request for json-ld",
+    "presentation_request": {
+        "dif": {
+            "options": {
+                "challenge": "3fa85f64-5717-4562-b3fc-2c963f66afa7",
+                "domain": "4jt78h47fh47"
+            },
+            "presentation_definition": {
+                "id": "32f54163-7166-48f1-93d8-ff217bdb0654",
+                "format": {"ldp_vp": {"proof_type": ["Ed25519Signature2018"]}},
+                "input_descriptors": [
+                    {
+                        "id": null,
+                        "name": null,
+                        "schema": [
+                            {
+                                "uri": "https://www.w3.org/2018/credentials#VerifiableCredential"     
+                            }
+                        ],
+                        "constraints": {
+                            "fields": [
+                                {
+                                    "path": [
+                                        "$.credentialSubject.familyName"
+                                    ],
+                                    "purpose": "The claim must be from one of the specified person"
+                                },
+                                {
+                                    "path": [
+                                        "$.credentialSubject.givenName"
+                                    ],
+                                    "purpose": "The claim must be from one of the specified person"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en" class="h-100">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Hugo 0.88.1">
+  <title>Wallet manager</title>
+
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/cover/">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+  <script type="text/javascript" charset="utf8"
+    src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
+  <script src="/static/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <script src="/static/js/default.js"></script>
+  <script src="/static/js/{{ script }}"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+
+    .dataTables_wrapper .dataTables_length, 
+    .dataTables_wrapper .dataTables_filter, 
+    .dataTables_wrapper .dataTables_info, 
+    .dataTables_wrapper .dataTables_processing, 
+    .dataTables_wrapper .dataTables_paginate
+    {
+      color: white
+    }
+
+    input{
+      color: white
+    }
+
+    select{
+      color: white
+    }
+  </style>
+
+
+  <!-- Custom styles for this template -->
+  <link href="/static/css/cover.css" rel="stylesheet">
+</head>
+
+<body class="d-flex h-100 text-center text-white bg-dark">
+
+  <div class="d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <div class="cover-container mx-auto flex-column d-flex w-100">
+      <header class="mb-auto">
+        <div>
+          <h3 class="float-md-start mb-0">{{ title }}</h3>
+          <nav class="nav nav-masthead justify-content-center float-md-end">
+            <a class="nav-link active" aria-current="page" href="#">Connections</a>
+            <a class="nav-link" href="#">Exchanges</a>
+            <a class="nav-link" href="#">Credentials</a>
+            <a class="nav-link" href="#">Presentations</a>
+            <a class="nav-link" href="#">Contact</a>
+          </nav>
+        </div>
+      </header>
+    </div>
+    <div class="mx-auto flex-column d-flex w-100 h-100">
+      <main id="Connections" class="p-3 h-100 w-100">
+        <h1>Create Connections</h1>
+        <p class="lead">
+          <a href="#" id="new-invitation" class="btn btn-lg btn-secondary fw-bold border-white bg-white">{{ button }}
+            new invitation</a>
+        </p>
+        <div class="row justify-content-md-center">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-8">
+            <div class="input-group flex-nowrap d-none">
+              <textarea class="form-control" placeholder="Invitation" name="invitation"
+                aria-describedby="addon-wrapping"></textarea>
+            </div>
+          </div>
+          <div class="col-sm-2"></div>
+        </div>
+
+        <h1>Manage Connections</h1>
+        <div class="row justify-content-md-center px-5">
+          <table id="connections-tab" class="table table-dark table-striped">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>My did</th>
+                <th>Their did</th>
+                <th>Their role</th>
+                <th>State</th>
+                <th>Rfc23 State</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </main>
+
+      <main id="Exchanges" class="p-3 h-100 w-100">
+        <h1>Manage Exchanges</h1>
+        <div id="request-cred-form" class="col-sm-6 mx-auto">
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="my-did">Subject did</label>
+            <select class="form-select" id="my-did" aria-describedby="my-did"></select>
+          </div>
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="issuer-did">Issuer did</label>
+            <select class="form-select" id="issuer-did" aria-describedby="issuer-did"></select>
+          </div>
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="connection-id">Connection Id</label>
+            <select class="form-select" id="connection-id" aria-describedby="connection-id"></select>
+          </div>
+
+          <label for="cred-name" class="form-label">Credential data:</label>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="cred-name">Name</span>
+            <input type="text" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="cred-name">
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="cred-name">Last Name</span>
+            <input type="text" class="form-control" placeholder="Last Name" aria-label="Last Name" aria-describedby="cred-name">
+          </div>
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="cred-dregreetype">Degree Type</label>
+            <select class="form-select" id="cred-dregreetype" aria-describedby="cred-dregreetype">
+              <option value="BachelorDegree">Bachelor Degree</option>
+            </select>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="cred-degreename">Degree Name</span>
+            <input type="text" class="form-control" placeholder="Degree Name" aria-label="Degree Name" aria-describedby="cred-degreename">
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="college">College</span>
+            <input type="text" class="form-control" placeholder="College" aria-label="College" aria-describedby="college">
+          </div>
+        </div>
+        <p class="lead">
+          <a href="#" id="new-cred-request" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Request credential</a>
+        </p>
+        <div id="store-cred-form" class="col-sm-6 mx-auto">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="cred-ex-id">Exchange Id</span>
+            <input type="text" class="form-control" placeholder="Exchange Id" aria-label="Exchange Id" aria-describedby="cred-ex-id">
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="cred-id">Credential Id</span>
+            <input type="text" class="form-control" placeholder="Credential Id" aria-label="Credential Id" aria-describedby="cred-id">
+          </div>
+          <p class="lead">
+            <a href="#" id="store-cred-request" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Store credential</a>
+          </p>
+        </div>
+
+        <div class="row justify-content-md-center px-5">
+          <table id="exchanges-tab" class="table table-dark table-striped">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Role</th>
+                <th>State</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </main>
+      
+      <main id="Credentials" class="p-3 h-100 w-100">
+        <h1>Manage Credentials</h1>
+        <div class="row justify-content-md-center px-5">
+          <table id="credentials-tab" class="table table-dark table-striped">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Subject did</th>
+                <th>Issuer did</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </main>
+
+      <main id="Presentations" class="p-3 h-100 w-100">
+        <h1>Manage Presentations</h1>
+
+        <div id="request-pres-form" class="col-sm-6 mx-auto">
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="connection-id-pres">Connection Id</label>
+            <select class="form-select" id="connection-id-pres" aria-describedby="connection-id"></select>
+          </div>
+  
+          <label for="pres-id" class="form-label">Presentation data:</label>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="pres-id">Id</span>
+            <input type="text" class="form-control" placeholder="Id" aria-label="Id" aria-describedby="pres-id">
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="pres-name">Name</span>
+            <input type="text" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="pres-name">
+          </div>
+        </div>
+  
+        <p class="lead">
+          <a href="#" id="new-pres-request" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Request presentation</a>
+        </p>
+
+        <div id="send-pres-form" class="col-sm-6 mx-auto">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="pres-ex-id">Presentation Id</span>
+            <input type="text" class="form-control" placeholder="Presentation Id" aria-label="Presentation Id" aria-describedby="pres-ex-id">
+          </div>
+
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="pres-cred-id">Credential Id</label>
+            <select class="form-select" id="pres-cred-id" aria-describedby="pres-cred-id"></select>
+          </div>
+
+          <p class="lead">
+            <a href="#" id="new-pres-response" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Send presentation</a>
+          </p>
+        </div>        
+
+        <div class="row justify-content-md-center px-5">
+          <table id="presentations-tab" class="table table-dark table-striped">
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Role</th>
+                <th>Input Descriptor Id</th>
+                <th>State</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </main>
+
+    </div>
+
+    <footer class="mt-auto text-white-50">
+      <p>Wallet manager using <a href="https://getbootstrap.com/" class="text-white">Bootstrap</a>.</p>
+    </footer>
+  </div>
+
+</body>
+
+</html>
