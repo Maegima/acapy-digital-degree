@@ -1,0 +1,6 @@
+aiohttp==3.7.4.post0
+aries-cloudagent==0.7.2
+indy==0.1
+prompt_toolkit==2.0.10
+tornado==6.1
+ursa-bbs-signatures==1.0.1
