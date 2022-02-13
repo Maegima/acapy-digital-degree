@@ -240,13 +240,16 @@ function send_credential_request(){
     cred_name = form.find("[aria-describedby='cred-name']").val();
     cred_lastname = form.find("[aria-describedby='cred-lastname']").val();
     cred_dregreetype = form.find("[aria-describedby='cred-dregreetype']").val();
+    cred_prooftype = form.find("[aria-describedby='cred-prooftype']").val();
     cred_degreename = form.find("[aria-describedby='cred-degreename']").val();
     college = form.find("[aria-describedby='college']").val();
     date = (new Date()).toISOStringNoMilli();
     $.getJSON("static/js/credential.json", function(request) {
         console.log(request); // this will show the info it in firebug console
+        console.log(cred_prooftype);
         request.connection_id = connection_id;
         credential = request.filter.ld_proof.credential;
+        request.filter.ld_proof.options.proofType = cred_prooftype;
         credential.issuer = issuer_did;
         credential.issuanceDate = date;
         credential.credentialSubject.id = my_did;
@@ -279,9 +282,12 @@ function send_presentation_request(){
     connection_id = form.find("[aria-describedby='connection-id']").val();
     pres_id = form.find("[aria-describedby='pres-id']").val();
     pres_name = form.find("[aria-describedby='pres-name']").val();
+    pres_prooftype = form.find("[aria-describedby='pres-prooftype']").val();
     $.getJSON("static/js/presentation.json", function(request) {
         console.log(request); // this will show the info it in firebug console
         request.connection_id = connection_id;
+        format = request.presentation_request.dif.presentation_definition.format;
+        format.ldp_vp.proof_type.push(pres_prooftype);
         input_descriptor = request.presentation_request.dif.presentation_definition.input_descriptors[0];
         input_descriptor.id = pres_id;
         input_descriptor.name = pres_name;

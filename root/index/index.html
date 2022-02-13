@@ -136,8 +136,8 @@
             <input type="text" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="cred-name">
           </div>
           <div class="input-group mb-3">
-            <span class="input-group-text" id="cred-name">Last Name</span>
-            <input type="text" class="form-control" placeholder="Last Name" aria-label="Last Name" aria-describedby="cred-name">
+            <span class="input-group-text" id="cred-lastname">Last Name</span>
+            <input type="text" class="form-control" placeholder="Last Name" aria-label="Last Name" aria-describedby="cred-lastname">
           </div>
           <div class="input-group mb-3">
             <label class="input-group-text" for="cred-dregreetype">Degree Type</label>
@@ -152,6 +152,13 @@
           <div class="input-group mb-3">
             <span class="input-group-text" id="college">College</span>
             <input type="text" class="form-control" placeholder="College" aria-label="College" aria-describedby="college">
+          </div>
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="cred-prooftype">Proof Type</label>
+            <select class="form-select" id="cred-prooftype" aria-describedby="cred-prooftype">
+              <option value="Ed25519Signature2018">Ed25519Signature2018</option>
+              <option value="BbsBlsSignature2020">BbsBlsSignature2020</option>
+            </select>
           </div>
         </div>
         <p class="lead">
@@ -219,6 +226,14 @@
             <span class="input-group-text" id="pres-name">Name</span>
             <input type="text" class="form-control" placeholder="Name" aria-label="Name" aria-describedby="pres-name">
           </div>
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="pres-prooftype">Proof Type</label>
+            <select class="form-select" id="pres-prooftype" aria-describedby="pres-prooftype">
+              <option value="Ed25519Signature2018">Ed25519Signature2018</option>
+              <option value="BbsBlsSignature2020">BbsBlsSignature2020</option>
+            </select>
+          </div>
+          
         </div>
   
         <p class="lead">

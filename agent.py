@@ -380,7 +380,7 @@ class WebhookAgent():
     
     async def register_wallet(self):
         if not self.did:
-            data = {"method": DID_METHOD_KEY, "options": {"key_type": KEY_TYPE_ED255}}
+            data = {"method": DID_METHOD_KEY, "options": {"key_type": KEY_TYPE_BLS}}
             new_did = await self.admin_request("POST", "/wallet/did/create", data=data)
             self.did = new_did["result"]["did"]
 

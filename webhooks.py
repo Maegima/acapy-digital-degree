@@ -112,7 +112,7 @@ class WebHookServer():
                                 "birthDate": "1958-07-17",
                             },
                         },
-                        "options": {"proofType": SIG_TYPE_ED255},
+                        "options": {"proofType": SIG_TYPE_BLS},
                     }
                 },
             }
