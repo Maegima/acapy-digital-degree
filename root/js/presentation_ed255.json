@@ -9,7 +9,7 @@
             },
             "presentation_definition": {
                 "id": "32f54163-7166-48f1-93d8-ff217bdb0654",
-                "format": {"ldp_vp": {"proof_type": ["Ed25519Signature2018"]}},
+                "format": {"ldp_vp": {"proof_type": []}},
                 "input_descriptors": [
                     {
                         "id": null,

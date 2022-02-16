@@ -306,7 +306,12 @@ function send_presentation_request(){
     pres_id = form.find("[aria-describedby='pres-id']").val();
     pres_name = form.find("[aria-describedby='pres-name']").val();
     pres_prooftype = form.find("[aria-describedby='pres-prooftype']").val();
-    $.getJSON("static/js/presentation.json", function(request) {
+    var pres_json = ""
+    if(pres_prooftype == "BbsBlsSignature2020")
+        pres_json = "static/js/presentation_bls.json"
+    else if(pres_prooftype == "Ed25519Signature2018")
+        pres_json = "static/js/presentation_ed255.json"
+    $.getJSON(pres_json, function(request) {
         console.log(request); // this will show the info it in firebug console
         request.connection_id = connection_id;
         format = request.presentation_request.dif.presentation_definition.format;
