@@ -162,19 +162,20 @@ function get_exchanges(server, table){
         $.get(server + "/issue-credential-2.0/records", function (response) {
             results = response.results;
             results.forEach(element => {
-                row = [
+                var row = [
                     element.cred_ex_record.cred_ex_id,
                     element.cred_ex_record.role,
                     element.cred_ex_record.state
                 ];
-                line = table.row.add(parse_row(row)).node();
+                var line = table.row.add(parse_row(row)).node();
+                var line_child = line.children[0];
+                var credential_id = element.cred_ex_record.cred_ex_id;
                 if(element.cred_ex_record.state == "credential-received"){
-                    console.log(line.children[0])
-                    $(line.children[0]).click(function(){
+                    $(line_child).click(function(){
                         $("#store-cred-form").show();
-                        $("#store-cred-form").find("[aria-describedby='cred-ex-id']").val(line.children[0].innerHTML);
+                        $("#store-cred-form").find("[aria-describedby='cred-ex-id']").val(credential_id);
                     })
-                    line.children[0] = addTooltip(line.children[0], "Store credential");
+                    line_child = addTooltip(line_child, "Store credential");
                 }
                 
             });
@@ -196,25 +197,27 @@ function get_presentations(server, table){
                 } catch (e) {
                     console.error(e);
                 }
-                row = [
+                var row = [
                     element.pres_ex_id,
                     element.role,
                     input_descriptor_id,
                     element.state,
                 ];
-                line = table.row.add(parse_row(row)).node();
+                var line = table.row.add(parse_row(row)).node();
+                var line_child = line.children[0];
+                var presentation_id = element.pres_ex_id;
                 if(element.state == "request-received"){
-                    $(line.children[0]).click(function(){
+                    $(line_child).click(function(){
                         $("#send-pres-form").show();
-                        $("#send-pres-form").find("[aria-describedby='pres-ex-id']").val(line.children[0].innerHTML);
+                        $("#send-pres-form").find("[aria-describedby='pres-ex-id']").val(presentation_id);
                         get_presentation_credential(server);
                     })
-                    line.children[0] = addTooltip(line.children[0], "Send presentation");
+                    line_child = addTooltip(line_child, "Send presentation");
                 }else if(element.state == "presentation-received"){
-                    $(line.children[0]).click(function(){
-                        verify_presentation(server, line.children[0].innerHTML);
+                    $(line_child).click(function(){
+                        verify_presentation(server, presentation_id);
                     })
-                    line.children[0] = addTooltip(line.children[0], "Verify presentation");
+                    line_child = addTooltip(line_child, "Verify presentation");
                 }
             });
             table.draw();
@@ -398,12 +401,14 @@ function send_presentation_response(){
 }
 
 function get_presentation_credential(server){
-    form = $("#send-pres-form")
+    form = $("#send-pres-form");
     pres_ex_id = form.find("[aria-describedby='pres-ex-id']").val();
+    select = form.find("[aria-describedby='pres-cred-id']");
+    select.find('option').remove();
     try {
         $.get(server + "/present-proof-2.0/records/" + pres_ex_id + "/credentials", function (response) {
             response.forEach(element => {
-                form.find("[aria-describedby='pres-cred-id']").append(create_option(element.record_id, element.record_id));
+                select.append(create_option(element.record_id, element.record_id));
             });
         })
     } catch (e) {
