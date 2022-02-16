@@ -68,8 +68,13 @@ function parse_row(row) {
     for (i = 0; i < row.length; i++) {
         if (row[i] == undefined)
             new_row.push("null")
-        else
-            new_row.push(row[i])
+        else{
+            value = row[i].toString();
+            length = value.length;
+            if(length > 40)
+                value = value.substring(0, 32) + "..." + value.substring(length - 5, length);
+            new_row.push(value)
+        }
     }
     return new_row
 }
