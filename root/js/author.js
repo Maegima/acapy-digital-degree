@@ -8,11 +8,9 @@ $(document).ready(function () {
             data = JSON.parse(this.value);
             $(this).css('color', 'black');
             $.post("/invitation/accept", this.value, function (data) {
-                console.log(data);
                 window.location.reload();
             })
         } catch (e) {
-            console.log("err");
             $(this).css('color', 'red');
             return;
         }

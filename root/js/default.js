@@ -81,7 +81,7 @@ function get_connections(server, table) {
             });
         })
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
@@ -122,7 +122,7 @@ function get_issuer_dids(){
             });
         })
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
@@ -135,7 +135,7 @@ function get_subject_dids(){
             });
         })
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
@@ -169,7 +169,7 @@ function get_exchanges(server, table){
             table.draw();
         })
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
@@ -182,7 +182,7 @@ function get_presentations(server, table){
                 try{
                     input_descriptor_id = element.by_format.pres_request.dif.presentation_definition.input_descriptors[0].id;
                 } catch (e) {
-                    console.log(e);
+                    console.error(e);
                 }
                 row = [
                     element.pres_ex_id,
@@ -208,7 +208,7 @@ function get_presentations(server, table){
             table.draw();
         })
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
@@ -230,7 +230,7 @@ function get_credentials(server, table){
             table.draw();
         })
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
@@ -264,18 +264,23 @@ function send_credential_request(){
         credential.credentialSubject.college = college;
         console.log(request);
         try {
-            $.ajax({
+            request = $.ajax({
                 url:"http://localhost:8080/issue-credential-2.0/send-request",
                 type:"POST",
                 data: JSON.stringify(request),
                 contentType:"application/json; charset=utf-8",
                 dataType:"json",
-                function (response) {
-                    console.log(response);
-                }
-            })
+            });
+            request.done(function (response) {
+                console.log(response);
+                form.hide();
+            });
+            request.fail(function (jqXHR, textStatus, errorThrown){
+                console.error("The following error occurred: " + textStatus, errorThrown);
+                form.hide();
+            });
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
     });
 }
@@ -296,18 +301,23 @@ function send_presentation_request(){
         input_descriptor.name = pres_name;
         console.log(request);
         try {
-            $.ajax({
+            request = $.ajax({
                 url:"http://localhost:8081/present-proof-2.0/send-request",
                 type:"POST",
                 data: JSON.stringify(request),
                 contentType:"application/json; charset=utf-8",
                 dataType:"json",
-                function (response) {
-                    console.log(response);
-                }
-            })
+            });
+            request.done(function (response) {
+                console.log(response);
+                form.hide();
+            });
+            request.fail(function (jqXHR, textStatus, errorThrown){
+                console.error("The following error occurred: " + textStatus, errorThrown);
+                form.hide();
+            });
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
     });
 }
@@ -318,7 +328,7 @@ function store_credential_request(){
     cred_id = form.find("[aria-describedby='cred-id']").val();
     request = {"credential_id": cred_id}
     try {
-        $.ajax({
+        request = $.ajax({
             url:"http://localhost:8080/issue-credential-2.0/records/" + cred_ex_id + "/store",
             type:"POST",
             crossDomain: true,
@@ -329,9 +339,17 @@ function store_credential_request(){
             function (response) {
                 console.log(response);
             }
-        })
+        });
+        request.done(function (response) {
+            console.log(response);
+            form.hide();
+        });
+        request.fail(function (jqXHR, textStatus, errorThrown){
+            console.error("The following error occurred: " + textStatus, errorThrown);
+            form.hide();
+        });
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
@@ -345,20 +363,25 @@ function send_presentation_response(){
         }
     }
     try {
-        $.ajax({
+        request = $.ajax({
             url:"http://localhost:8080/present-proof-2.0/records/" + pres_ex_id + "/send-presentation",
             type:"POST",
             crossDomain: true,
             data: JSON.stringify(request),
             contentType:"application/json; charset=utf-8",
             accept: "application/json",
-            dataType:"json",
-            function (response) {
-                console.log(response);
-            }
-        })
+            dataType:"json"
+        });
+        request.done(function (response) {
+            console.log(response);
+            form.hide();
+        });
+        request.fail(function (jqXHR, textStatus, errorThrown){
+            console.error("The following error occurred: " + textStatus, errorThrown);
+            form.hide();
+        });
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
@@ -372,7 +395,7 @@ function get_presentation_credential(server){
             });
         })
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
@@ -383,6 +406,6 @@ function verify_presentation(server, pres_ex_id){
             window.location.reload();
         })
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }

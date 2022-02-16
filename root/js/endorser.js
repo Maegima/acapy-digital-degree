@@ -22,6 +22,6 @@ function create_invitation() {
             $("textarea[name=invitation]").val(invitation);
         })
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
