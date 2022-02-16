@@ -9,6 +9,7 @@ $(document).ready(function () {
             $(this).css('color', 'black');
             $.post("/invitation/accept", this.value, function (data) {
                 console.log(data);
+                window.location.reload();
             })
         } catch (e) {
             console.log("err");

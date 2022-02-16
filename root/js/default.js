@@ -41,7 +41,10 @@ $(document).ready(function () {
     })
 
     $("main").hide();
-    $("#Connections").show();
+    if(window.location.hash == "")
+        window.location.hash = "#Connections"
+    $(window.location.hash).show();
+    $(window.location.hash).parent().addClass("active");
 
     get_issuer_dids();
     get_subject_dids();
