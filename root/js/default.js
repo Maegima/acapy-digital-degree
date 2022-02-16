@@ -284,11 +284,11 @@ function send_credential_request(){
                 type:"POST",
                 data: JSON.stringify(request),
                 contentType:"application/json; charset=utf-8",
-                dataType:"json",
+                dataType:"json"
             });
             request.done(function (response) {
                 console.log(response);
-                form.hide();
+                window.location.reload();
             });
             request.fail(function (jqXHR, textStatus, errorThrown){
                 console.error("The following error occurred: " + textStatus, errorThrown);
@@ -321,11 +321,11 @@ function send_presentation_request(){
                 type:"POST",
                 data: JSON.stringify(request),
                 contentType:"application/json; charset=utf-8",
-                dataType:"json",
+                dataType:"json"
             });
             request.done(function (response) {
                 console.log(response);
-                form.hide();
+                window.location.reload();
             });
             request.fail(function (jqXHR, textStatus, errorThrown){
                 console.error("The following error occurred: " + textStatus, errorThrown);
@@ -346,18 +346,14 @@ function store_credential_request(){
         request = $.ajax({
             url:"http://localhost:8080/issue-credential-2.0/records/" + cred_ex_id + "/store",
             type:"POST",
-            crossDomain: true,
             data: JSON.stringify(request),
             contentType:"application/json; charset=utf-8",
             accept: "application/json",
-            dataType:"json",
-            function (response) {
-                console.log(response);
-            }
+            dataType:"json"
         });
         request.done(function (response) {
             console.log(response);
-            form.hide();
+            window.location.reload();
         });
         request.fail(function (jqXHR, textStatus, errorThrown){
             console.error("The following error occurred: " + textStatus, errorThrown);
@@ -381,7 +377,6 @@ function send_presentation_response(){
         request = $.ajax({
             url:"http://localhost:8080/present-proof-2.0/records/" + pres_ex_id + "/send-presentation",
             type:"POST",
-            crossDomain: true,
             data: JSON.stringify(request),
             contentType:"application/json; charset=utf-8",
             accept: "application/json",
@@ -389,7 +384,7 @@ function send_presentation_response(){
         });
         request.done(function (response) {
             console.log(response);
-            form.hide();
+            window.location.reload();
         });
         request.fail(function (jqXHR, textStatus, errorThrown){
             console.error("The following error occurred: " + textStatus, errorThrown);
