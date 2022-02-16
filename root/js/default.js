@@ -1,7 +1,7 @@
 $(document).ready(function () {    
     $("#new-cred-request").click(function (){
         if($("#request-cred-form").is(":visible")){
-            send_credential_request();
+            send_credential_request("#Exchanges");
         } else{
             $("#request-cred-form").show(); 
         }
@@ -9,14 +9,14 @@ $(document).ready(function () {
     $("#request-cred-form").hide();
 
     $("#store-cred-request").click(function (){
-        store_credential_request();
+        store_credential_request("#Exchanges");
         $("#store-cred-form").hide();
     })
     $("#store-cred-form").hide();
 
     $("#new-pres-request").click(function (){
         if($("#request-pres-form").is(":visible")){
-            send_presentation_request();
+            send_presentation_request("#Presentations");
             $("#request-cred-form").hide();
         } else{
             $("#request-pres-form").show(); 
@@ -25,7 +25,7 @@ $(document).ready(function () {
     $("#request-pres-form").hide();
 
     $("#new-pres-response").click(function (){
-        send_presentation_response();
+        send_presentation_response("#Presentations");
         $("#send-pres-form").hide();
     })
     $("#send-pres-form").hide();
@@ -54,7 +54,11 @@ $(document).ready(function () {
         window.location.hash = "#Connections"
     $(window.location.hash).show();
     $(`.nav-link[href='${window.location.hash}']`).addClass("active");
-
+    $.busyLoadSetup({ 
+        background: "rgba(255, 255, 255, 0.15)",
+	    spinner: "cube-grid",
+	    animation: "slide"
+    });
     get_issuer_dids("key", "ed25519");
     get_subject_dids("key", "ed25519");
 });
@@ -249,7 +253,7 @@ function get_credentials(server, table){
     }
 }
 
-function send_credential_request(){
+function send_credential_request(overlay){
     form = $("#request-cred-form");
     my_did = form.find("[aria-describedby='my-did']").val();
     issuer_did = form.find("[aria-describedby='issuer-did']").val();
@@ -263,8 +267,6 @@ function send_credential_request(){
     college = form.find("[aria-describedby='college']").val();
     date = (new Date()).toISOStringNoMilli();
     $.getJSON("static/js/credential.json", function(request) {
-        console.log(request); // this will show the info it in firebug console
-        console.log(cred_prooftype);
         request.connection_id = connection_id;
         credential = request.filter.ld_proof.credential;
         request.filter.ld_proof.options.proofType = cred_prooftype;
@@ -277,7 +279,8 @@ function send_credential_request(){
         credential.credentialSubject.degree.degreeType = "Undergraduate";
         credential.credentialSubject.degree.name = cred_degreename;
         credential.credentialSubject.college = college;
-        console.log(request);
+        form.hide();
+        $(overlay).busyLoad("show");
         try {
             request = $.ajax({
                 url:"http://localhost:8080/issue-credential-2.0/send-request",
@@ -292,15 +295,16 @@ function send_credential_request(){
             });
             request.fail(function (jqXHR, textStatus, errorThrown){
                 console.error("The following error occurred: " + textStatus, errorThrown);
-                form.hide();
+                $(overlay).busyLoad("hide");
             });
         } catch (e) {
             console.error(e);
+            $(overlay).busyLoad("hide");
         }
     });
 }
 
-function send_presentation_request(){
+function send_presentation_request(overlay){
     form = $("#request-pres-form");
     connection_id = form.find("[aria-describedby='connection-id']").val();
     pres_id = form.find("[aria-describedby='pres-id']").val();
@@ -312,14 +316,14 @@ function send_presentation_request(){
     else if(pres_prooftype == "Ed25519Signature2018")
         pres_json = "static/js/presentation_ed255.json"
     $.getJSON(pres_json, function(request) {
-        console.log(request); // this will show the info it in firebug console
         request.connection_id = connection_id;
         format = request.presentation_request.dif.presentation_definition.format;
         format.ldp_vp.proof_type.push(pres_prooftype);
         input_descriptor = request.presentation_request.dif.presentation_definition.input_descriptors[0];
         input_descriptor.id = pres_id;
         input_descriptor.name = pres_name;
-        console.log(request);
+        form.hide();
+        $(overlay).busyLoad("show");
         try {
             request = $.ajax({
                 url:"http://localhost:8081/present-proof-2.0/send-request",
@@ -334,19 +338,22 @@ function send_presentation_request(){
             });
             request.fail(function (jqXHR, textStatus, errorThrown){
                 console.error("The following error occurred: " + textStatus, errorThrown);
-                form.hide();
+                $(overlay).busyLoad("hide");
             });
         } catch (e) {
+            $(overlay).busyLoad("hide");
             console.error(e);
         }
     });
 }
 
-function store_credential_request(){
+function store_credential_request(overlay){
     form = $("#store-cred-form");
     cred_ex_id = form.find("[aria-describedby='cred-ex-id']").val();
     cred_id = form.find("[aria-describedby='cred-id']").val();
-    request = {"credential_id": cred_id}
+    request = {"credential_id": cred_id};
+    form.hide();
+    $(overlay).busyLoad("show");
     try {
         request = $.ajax({
             url:"http://localhost:8080/issue-credential-2.0/records/" + cred_ex_id + "/store",
@@ -362,14 +369,15 @@ function store_credential_request(){
         });
         request.fail(function (jqXHR, textStatus, errorThrown){
             console.error("The following error occurred: " + textStatus, errorThrown);
-            form.hide();
+            $(overlay).busyLoad("hide");
         });
     } catch (e) {
+        $(overlay).busyLoad("hide");
         console.error(e);
     }
 }
 
-function send_presentation_response(){
+function send_presentation_response(overlay){
     form = $("#send-pres-form")
     pres_ex_id = form.find("[aria-describedby='pres-ex-id']").val();
     pres_cred_id = form.find("[aria-describedby='pres-cred-id']").val();
@@ -378,6 +386,8 @@ function send_presentation_response(){
             "record_ids": { "university_degree_1": [pres_cred_id] } 
         }
     }
+    form.hide();
+    $(overlay).busyLoad("show");
     try {
         request = $.ajax({
             url:"http://localhost:8080/present-proof-2.0/records/" + pres_ex_id + "/send-presentation",
@@ -393,9 +403,10 @@ function send_presentation_response(){
         });
         request.fail(function (jqXHR, textStatus, errorThrown){
             console.error("The following error occurred: " + textStatus, errorThrown);
-            form.hide();
+            $(overlay).busyLoad("hide");
         });
     } catch (e) {
+        $(overlay).busyLoad("hide");
         console.error(e);
     }
 }
