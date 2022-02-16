@@ -40,14 +40,23 @@ $(document).ready(function () {
         }
     })
 
+    $("#cred-prooftype").change(function (){
+        key_type = "ed25519"
+        if(this.value == "BbsBlsSignature2020")
+            key_type = "bls12381g2"
+            
+        get_issuer_dids("key", key_type);
+        get_subject_dids("key", key_type);
+    })
+
     $("main").hide();
     if(window.location.hash == "")
         window.location.hash = "#Connections"
     $(window.location.hash).show();
-    $(window.location.hash).parent().addClass("active");
+    $(`.nav-link[href='${window.location.hash}']`).addClass("active");
 
-    get_issuer_dids();
-    get_subject_dids();
+    get_issuer_dids("key", "ed25519");
+    get_subject_dids("key", "ed25519");
 });
 
 function parse_row(row) {
@@ -113,9 +122,10 @@ function create_option(value, name){
     return option;
 }
 
-function get_issuer_dids(){
+function get_issuer_dids(method, key_type){
     try {
-        $.get("http://localhost:8080/wallet/did?method=key", function (response) {
+        $("#my-did").find('option').remove();
+        $.get(`http://localhost:8080/wallet/did?method=${method}&key_type=${key_type}`, function (response) {
             results = response.results;
             results.forEach(element => {
                 $("#my-did").append(create_option(element.did, element.did));
@@ -126,9 +136,10 @@ function get_issuer_dids(){
     }
 }
 
-function get_subject_dids(){
+function get_subject_dids(method, key_type){
     try {
-        $.get("http://localhost:8081/wallet/did?method=key", function (response) {
+        $("#issuer-did").find('option').remove();
+        $.get(`http://localhost:8081/wallet/did?method=${method}&key_type=${key_type}`, function (response) {
             results = response.results;
             results.forEach(element => {
                 $("#issuer-did").append(create_option(element.did, element.did));
@@ -158,6 +169,7 @@ function get_exchanges(server, table){
                 ];
                 line = table.row.add(parse_row(row)).node();
                 if(element.cred_ex_record.state == "credential-received"){
+                    console.log(line.children[0])
                     $(line.children[0]).click(function(){
                         $("#store-cred-form").show();
                         $("#store-cred-form").find("[aria-describedby='cred-ex-id']").val(line.children[0].innerHTML);

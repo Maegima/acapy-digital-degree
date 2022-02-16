@@ -380,9 +380,14 @@ class WebhookAgent():
     
     async def register_wallet(self):
         if not self.did:
+            self.did = []
             data = {"method": DID_METHOD_KEY, "options": {"key_type": KEY_TYPE_BLS}}
             new_did = await self.admin_request("POST", "/wallet/did/create", data=data)
-            self.did = new_did["result"]["did"]
+            self.did.append(new_did["result"]["did"])
+
+            data = {"method": DID_METHOD_KEY, "options": {"key_type": KEY_TYPE_ED255}}
+            new_did = await self.admin_request("POST", "/wallet/did/create", data=data)
+            self.did.append(new_did["result"]["did"])
 
     async def handle_webhook(self, topic: str, payload, headers: dict):
         if topic != "webhook":  # would recurse
